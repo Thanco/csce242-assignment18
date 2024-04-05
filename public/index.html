@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title>Fun Crafts</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <header>
+            <h1>Welcome to Fun Crafts!</h1>
+        </header>
+        <main id="main-content">
+            <div>
+                <h2>Buy and Sell Crafts</h2>
+                <button id="btn-add-craft">+</button>
+            </div>
+            <div id="crafts" class="container"></div>
+            <div id="craft-form" class="modal">
+                <div class="modal-content">
+                    <div>
+                        <h3>Add a Craft</h3>
+                        <span id="btn-close" class="btn-close">&times;</span>
+                    </div>
+                    <div class="columns">
+                        <div>
+                            <img id="img-preview" src="https://place-hold.it/200x300" alt="Placeholder Image">
+                        </div>
+                        <form id="add-craft-form" class="form-craft-info">
+                            <ul>
+                                <input type="text" name="_id" id="_id" class="hidden" value="-1">
+                                <li><label for="name">Name: </label><input type="text" id="name" name="name" minlength="4" required></li>
+                                <li><label for="description">Description: </label></li>
+                                <li><textarea id="description" name="description" rows="4" cols="50" minlength="10" required></textarea></li>
+                                <li><label for="image">Image: </label><input type="file" id="image" name="image" accept="image/*" required></li>
+                                <li><label for="supplies">Supplies: </label><button type="button" id="btn-add-supply">Add Supply</button></li>
+                                <li><ul id="ul-supplies">
+                                    <li><input type="text" name="supplies" minlength="4" required></li>
+                                    <li><input type="text" name="supplies" minlength="4" required></li>
+                                </ul></li>
+                                <li><button type="submit">Add Craft</button></li>
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <p>Node Project</p>
+        </footer>
+        <script src="script.js"></script>
+    </body>
+</html>
