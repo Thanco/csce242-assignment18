@@ -65,6 +65,11 @@ img {
     cursor: pointer;
 }
 
+.error {
+    color: red;
+    font-weight: bold;
+}
+
 .hidden {
     display: none;
 }

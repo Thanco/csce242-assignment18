@@ -88,7 +88,7 @@ const schema = joi.object({
 app.post('/api/crafts', upload.single('image'), async (req, res) => {
     const validated = schema.validate(req.body);
     if (validated.error) {
-        res.status(400).send(validated.error.details[0].message);
+        res.status(400).send(`Schema could not be validated: ${validated.error.details[0].message}`);
         return;
     }
 
@@ -127,7 +127,7 @@ app.put('/api/crafts/:id', upload.single('image'), async (req, res) => {
 
     const validated = schema.validate(req.body);
     if (validated.error) {
-        res.status(400).send(validated.error.details[0].message);
+        res.status(400).send(`Schema could not be validated: ${validated.error.details[0].message}`);
         return;
     }
 

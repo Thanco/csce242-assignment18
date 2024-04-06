@@ -100,6 +100,7 @@ class Craft {
                                 <button class="btn-back">Back</button>
                                 <button type="submit">Save</button>
                             </li>
+                            <li><p class="error"></p></li>
                         </ul>
                     </form>
                 </div>
@@ -154,23 +155,32 @@ class Craft {
             
             const formInfo = new FormData(event.target);
 
-            if (formInfo.get('image').arrayBuffer().byteLength > 2000000) {
-                console.error('Error: Image size is too large');
+            const error = editForm.querySelector('.error');
+            if (formInfo.get('image').size > 1000000) {
+                error.textContent = 'Image size is too large';
                 return;
             }
 
-            const put = await fetch(`/api/crafts/${this._id}`, {
+            const put = fetch(`/api/crafts/${this._id}`, {
                 method: 'PUT',
                 body: formInfo,
-            });
-
-            if (!put.ok) {
-                console.error('Error:', put.status);
+            }).then(res => {
+                if (!res.ok) {
+                    console.error(res);
+                    error.innerHTML = `Error updating craft: ${res.status}`;
+                    console.log(`Error updating craft: ${res.status}`);
+                    console.log(error.innerHTML);
+                    return;
+                }
+    
+                getCrafts();
+                modal.remove();
+            }).catch(e => {
+                console.error(e);
+                error.textContent = `Error updating craft: ${put.status}`;
                 return;
-            }
-
-            getCrafts();
-            modal.remove();
+            });
+            
         });
         
         return content;
@@ -187,6 +197,7 @@ class Craft {
                     <p>Are you sure you want to delete ${this.name}?</p>
                     <button class="btn-back">No</button>
                     <button class="btn-delete">Yes</button>
+                    <p class="error"></p>
                 </div>
             </div>
         `;
@@ -213,10 +224,14 @@ class Craft {
         btnDelete.addEventListener('click', async () => {
             const del = await fetch(`/api/crafts/${this._id}`, {
                 method: 'DELETE',
+            }).catch(error => {
+                error.textContent = `Error updating craft: ${put.status}`;
+                return;
             });
+                
 
             if (!del.ok) {
-                console.error('Error:', del.status);
+                content.querySelector('.error').textContent = `Error deleting craft: ${del.status}`;
                 return;
             }
 
@@ -299,6 +314,7 @@ const closeForm = () => {
         <li><input type="text" name="supplies" minlength="4" required></li>`
     ;
     document.getElementById('img-preview').src = 'https://place-hold.it/200x300';
+    formModal.querySelector('.error').textContent = '';
 }
 document.getElementById('btn-close').addEventListener('click', () => {
     closeForm();
@@ -322,18 +338,22 @@ formModal.addEventListener('submit', async (event) => {
 
     const formInfo = new FormData(event.target);
 
+    const error = formModal.querySelector('.error');
     if (formInfo.get('image').size > 1000000) {
-        alert('Image size is too large')
+        error.textContent = 'Image size is too large';
         return;
     }
 
     const post = await fetch('/api/crafts', {
         method: 'POST',
         body: formInfo,
+    }).catch(error => {
+        error.textContent = `Error updating craft: ${put.status}`;
+        return;
     });
 
     if (!post.ok) {
-        console.error('Error:', post.status);
+        error.textContent = `Error adding craft: ${post.status}`;
         return;
     }
     getCrafts();
