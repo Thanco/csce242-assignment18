@@ -1,14 +1,14 @@
 class Craft {
-    constructor(_id, name, imageName, description, supplies) {
+    constructor(_id, name, imageBase64, description, supplies) {
         this._id = _id;
         this.name = name;
-        this.imageName = imageName;
+        this.imageBase64 = imageBase64;
         this.description = description;
         this.supplies = supplies;
     }
 
     get image() {
-        return `crafts/${this.imageName}`;
+        return `data:image/jpg;base64,${this.imageBase64}`;
     }
 
     get imageDisplay() {
@@ -153,6 +153,11 @@ class Craft {
             event.preventDefault();
             
             const formInfo = new FormData(event.target);
+
+            if (formInfo.get('image').arrayBuffer().byteLength > 2000000) {
+                console.error('Error: Image size is too large');
+                return;
+            }
 
             const put = await fetch(`/api/crafts/${this._id}`, {
                 method: 'PUT',
@@ -317,6 +322,11 @@ formModal.addEventListener('submit', async (event) => {
 
     const formInfo = new FormData(event.target);
 
+    if (formInfo.get('image').size > 1000000) {
+        alert('Image size is too large')
+        return;
+    }
+
     const post = await fetch('/api/crafts', {
         method: 'POST',
         body: formInfo,
@@ -326,7 +336,6 @@ formModal.addEventListener('submit', async (event) => {
         console.error('Error:', post.status);
         return;
     }
-    
     getCrafts();
     closeForm();
 });
