@@ -161,6 +161,11 @@ class Craft {
                 return;
             }
 
+            if (formInfo.getAll('supplies').length < 2) {
+                error.textContent = 'Supply list is too short';
+                return;
+            }
+
             const put = fetch(`/api/crafts/${this._id}`, {
                 method: 'PUT',
                 body: formInfo,
@@ -341,6 +346,11 @@ formModal.addEventListener('submit', async (event) => {
     const error = formModal.querySelector('.error');
     if (formInfo.get('image').size > 1000000) {
         error.textContent = 'Image size is too large';
+        return;
+    }
+
+    if (formInfo.getAll('supplies').length < 2) {
+        error.textContent = 'Supply list is too short';
         return;
     }
 
