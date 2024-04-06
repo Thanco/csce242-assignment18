@@ -21,8 +21,6 @@ const storage = multer.memoryStorage();
 // });
 const upload = multer({ storage: storage });
 
-console.log(`${process.env.USER_NAME}:${process.env.USER_PASSWORD}`);
-
 const mongoose = require("mongoose");
 mongoose
   .connect(`mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASSWORD}@cluster0.dero9go.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/testdb`)
